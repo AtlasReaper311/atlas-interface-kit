@@ -1,4 +1,4 @@
-/* Atlas Interface Kit v0.1.0 generated tokens. */
+/* Atlas Interface Kit v0.1.1 generated tokens. */
 :root {
   color-scheme: dark;
   --atlas-bg: #0a0a0f;
@@ -8,7 +8,7 @@
   --atlas-border-hi: rgba(255,255,255,0.16);
   --atlas-text: #e8e8e0;
   --atlas-text-dim: #aaa9a0;
-  --atlas-text-faint: #555560;
+  --atlas-text-faint: #888894;
   --atlas-accent: #f5a623;
   --atlas-accent-hover: #f7b84a;
   --atlas-accent-dim: rgba(245,166,35,0.12);
@@ -62,7 +62,7 @@
   --atlas-font-display: 'DM Serif Display', Georgia, serif;
   --atlas-font-body: 'IBM Plex Mono', monospace;
 }
-/* Atlas Interface Kit v0.1.0 component foundations. */
+/* Atlas Interface Kit v0.1.1 component foundations. */
 .atlas-global-header {
   position: sticky;
   top: 0;

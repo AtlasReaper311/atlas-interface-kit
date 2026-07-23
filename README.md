@@ -12,7 +12,7 @@
 ```
 
 [![CI](https://github.com/AtlasReaper311/atlas-interface-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/AtlasReaper311/atlas-interface-kit/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-0.1.0-f5a623?style=flat-square&labelColor=0a0a0f)
+![Version](https://img.shields.io/badge/version-0.1.1-f5a623?style=flat-square&labelColor=0a0a0f)
 ![Assets](https://img.shields.io/badge/assets-CSS%20%2B%20JSON-4ade80?style=flat-square&labelColor=0a0a0f)
 ![Runtime](https://img.shields.io/badge/runtime-repository--local-aaa9a0?style=flat-square&labelColor=0a0a0f)
 ![License](https://img.shields.io/badge/license-MIT-aaa9a0?style=flat-square&labelColor=0a0a0f)
@@ -49,7 +49,7 @@ python3 -m unittest discover -s tests -v
 git diff --check
 ```
 
-Validation checks deterministic output, immutable brand and accessibility tokens, all approved component roles, distributed file fingerprints, repository-local runtime behaviour, and generated-file cleanliness.
+Validation checks deterministic output, immutable brand and accessibility tokens, WCAG AA contrast for readable faint text on every Atlas surface, all approved component roles, distributed file fingerprints, repository-local runtime behaviour, and generated-file cleanliness.
 
 ## Release process
 
