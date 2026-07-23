@@ -10,6 +10,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
+VERSION = "0.1.1"
+MIN_TEXT_CONTRAST = 4.5
 
 EXPECTED_ROLES = {
     "global-header", "product-strip", "page-introduction", "section-heading",
@@ -21,8 +23,9 @@ EXPECTED_ROLES = {
 }
 EXPECTED_COLOURS = {
     "bg": "#0a0a0f", "bg_1": "#111118", "bg_2": "#1a1a24",
-    "text": "#e8e8e0", "text_dim": "#aaa9a0", "accent": "#f5a623",
-    "operational": "#4ade80", "unavailable": "#e24b4a", "informational": "#60a5fa",
+    "text": "#e8e8e0", "text_dim": "#aaa9a0", "text_faint": "#888894",
+    "accent": "#f5a623", "operational": "#4ade80", "unavailable": "#e24b4a",
+    "informational": "#60a5fa",
 }
 
 
@@ -39,6 +42,24 @@ def require(condition: bool, message: str) -> None:
         raise SystemExit(message)
 
 
+def relative_luminance(value: str) -> float:
+    require(value.startswith("#") and len(value) == 7, f"unsupported colour format: {value}")
+    channels = [int(value[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+    linear = [
+        channel / 12.92 if channel <= 0.04045 else ((channel + 0.055) / 1.055) ** 2.4
+        for channel in channels
+    ]
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+
+def contrast_ratio(foreground: str, background: str) -> float:
+    lighter, darker = sorted(
+        (relative_luminance(foreground), relative_luminance(background)),
+        reverse=True,
+    )
+    return (lighter + 0.05) / (darker + 0.05)
+
+
 def main() -> int:
     subprocess.run([sys.executable, str(ROOT / "scripts/build.py")], check=True)
     tokens = load_json(ROOT / "src/tokens.json")
@@ -47,7 +68,7 @@ def main() -> int:
 
     require(tokens.get("schema_version") == "atlas-interface-kit/tokens/v1", "invalid token schema")
     require(components.get("schema_version") == "atlas-interface-kit/components/v1", "invalid component schema")
-    require(tokens.get("version") == manifest.get("version") == "0.1.0", "version mismatch")
+    require(tokens.get("version") == manifest.get("version") == VERSION, "version mismatch")
     require(tokens.get("contract_version") == manifest.get("contract_version") == "2.0.0", "contract version mismatch")
     require(tokens["space_px"] == [4, 8, 12, 16, 24, 32, 48, 64, 96], "spacing scale drifted")
     require(tokens["control_px"] == {"compact": 32, "standard": 40, "touch_min": 44}, "control scale drifted")
@@ -58,6 +79,12 @@ def main() -> int:
     require(tokens["type_px"]["meta"] >= 11, "metadata text must remain at least 11px")
     for name, value in EXPECTED_COLOURS.items():
         require(tokens["colour"].get(name) == value, f"colour token {name} drifted")
+    for surface in ("bg", "bg_1", "bg_2"):
+        ratio = contrast_ratio(tokens["colour"]["text_faint"], tokens["colour"][surface])
+        require(
+            ratio >= MIN_TEXT_CONTRAST,
+            f"text_faint contrast against {surface} is {ratio:.2f}:1; expected at least {MIN_TEXT_CONTRAST}:1",
+        )
 
     role_map = {item["role"]: item["selector"] for item in components["roles"]}
     require(set(role_map) == EXPECTED_ROLES, "component role contract is incomplete")
