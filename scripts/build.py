@@ -9,7 +9,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 CONTRACT_VERSION = "2.0.0"
 
 
@@ -23,7 +23,7 @@ def sha256(data: bytes) -> str:
 
 def css_variables(tokens: dict[str, Any]) -> str:
     lines = [
-        "/* Atlas Interface Kit v0.1.0 generated tokens. */",
+        f"/* Atlas Interface Kit v{VERSION} generated tokens. */",
         ":root {",
         "  color-scheme: dark;",
     ]
