@@ -1,0 +1,73 @@
+/* Atlas Interface Kit v0.1.0. Generated bundle source. */
+:root {
+  color-scheme: dark;
+  --atlas-bg: #0a0a0f;
+  --atlas-bg-1: #111118;
+  --atlas-bg-2: #1a1a24;
+  --atlas-border: rgba(255,255,255,0.08);
+  --atlas-border-hi: rgba(255,255,255,0.16);
+  --atlas-text: #e8e8e0;
+  --atlas-text-dim: #aaa9a0;
+  --atlas-text-faint: #555560;
+  --atlas-accent: #f5a623;
+  --atlas-accent-hover: #f7b84a;
+  --atlas-accent-dim: rgba(245,166,35,0.12);
+  --atlas-operational: #4ade80;
+  --atlas-degraded: #f5a623;
+  --atlas-unavailable: #e24b4a;
+  --atlas-unknown: #aaa9a0;
+  --atlas-space-1: 4px;
+  --atlas-space-2: 8px;
+  --atlas-space-3: 12px;
+  --atlas-space-4: 16px;
+  --atlas-space-5: 24px;
+  --atlas-space-6: 32px;
+  --atlas-space-7: 48px;
+  --atlas-space-8: 64px;
+  --atlas-space-9: 96px;
+  --atlas-radius-sm: 4px;
+  --atlas-radius-md: 6px;
+  --atlas-radius-lg: 8px;
+  --atlas-control-compact: 32px;
+  --atlas-control-standard: 40px;
+  --atlas-touch-min: 44px;
+  --atlas-prose: 720px;
+  --atlas-content: 1100px;
+  --atlas-content-wide: 1360px;
+  --atlas-font-display: 'DM Serif Display', Georgia, serif;
+  --atlas-font-body: 'IBM Plex Mono', monospace;
+  --atlas-motion-fast: 120ms;
+  --atlas-motion-standard: 180ms;
+  --atlas-motion-reveal: 240ms;
+}
+
+.atlas-page-intro { max-width: var(--atlas-content); margin-inline: auto; padding: var(--atlas-space-8) var(--atlas-space-5) var(--atlas-space-7); }
+.atlas-page-intro__eyebrow { margin: 0 0 var(--atlas-space-3); color: var(--atlas-accent); font: 500 0.75rem/1.4 var(--atlas-font-body); letter-spacing: 0.1em; text-transform: uppercase; }
+.atlas-page-intro__title { margin: 0; color: var(--atlas-text); font: 400 clamp(2.25rem, 6vw, 4.5rem)/0.98 var(--atlas-font-display); }
+.atlas-page-intro__purpose { max-width: var(--atlas-prose); margin: var(--atlas-space-5) 0 0; color: var(--atlas-text-dim); font: 400 1rem/1.75 var(--atlas-font-body); }
+
+.atlas-card { border: 1px solid var(--atlas-border); border-radius: var(--atlas-radius-md); background: var(--atlas-bg-1); padding: var(--atlas-space-5); }
+.atlas-card--data { background: var(--atlas-bg-2); }
+.atlas-card--interactive { transition: border-color var(--atlas-motion-standard) ease, transform var(--atlas-motion-standard) ease; }
+.atlas-card--interactive:hover { border-color: var(--atlas-border-hi); transform: translateY(-1px); }
+
+.atlas-button { min-height: var(--atlas-control-standard); display: inline-flex; align-items: center; justify-content: center; gap: var(--atlas-space-2); border: 1px solid var(--atlas-border-hi); border-radius: var(--atlas-radius-sm); padding: 0 var(--atlas-space-4); color: var(--atlas-text); background: var(--atlas-bg-2); font: 500 0.8125rem/1 var(--atlas-font-body); text-decoration: none; cursor: pointer; }
+.atlas-button:hover { border-color: var(--atlas-accent); }
+.atlas-button--primary { border-color: var(--atlas-accent); background: var(--atlas-accent); color: var(--atlas-bg); }
+.atlas-button--primary:hover { background: var(--atlas-accent-hover); }
+
+.atlas-badge { display: inline-flex; min-height: 24px; align-items: center; border: 1px solid var(--atlas-border); border-radius: 999px; padding: 0 var(--atlas-space-3); color: var(--atlas-text-dim); background: var(--atlas-bg-2); font: 500 0.6875rem/1 var(--atlas-font-body); letter-spacing: 0.06em; text-transform: uppercase; }
+.atlas-status[data-state='operational'] { color: var(--atlas-operational); }
+.atlas-status[data-state='degraded'] { color: var(--atlas-degraded); }
+.atlas-status[data-state='unavailable'] { color: var(--atlas-unavailable); }
+.atlas-status[data-state='unknown'] { color: var(--atlas-unknown); }
+
+.atlas-state { border: 1px solid var(--atlas-border); border-radius: var(--atlas-radius-md); padding: var(--atlas-space-5); background: var(--atlas-bg-1); }
+.atlas-state__title { margin: 0; color: var(--atlas-text); font: 500 0.875rem/1.4 var(--atlas-font-body); }
+.atlas-state__detail { margin: var(--atlas-space-3) 0 0; color: var(--atlas-text-dim); font: 400 0.875rem/1.7 var(--atlas-font-body); }
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 2px solid var(--atlas-accent); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
