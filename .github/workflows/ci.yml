@@ -28,6 +28,16 @@ jobs:
         run: python3 scripts/check.py
       - name: Run tests
         run: python3 -m unittest discover -s tests -v
+      - name: Capture generated diff
+        run: git diff --binary > generated-bundle.diff
+      - name: Upload generated diff
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: generated-bundle-diff
+          path: generated-bundle.diff
+          if-no-files-found: error
+          retention-days: 7
       - name: Check generated diff
         run: git diff --exit-code
       - name: Check whitespace
