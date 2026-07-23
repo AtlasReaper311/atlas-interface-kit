@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.repository }}-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate interface kit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Compile tooling
+        run: python3 -m py_compile scripts/build.py scripts/check.py
+      - name: Validate bundle
+        run: python3 scripts/check.py
+      - name: Run tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Check generated diff
+        run: git diff --exit-code
+      - name: Check whitespace
+        run: git diff --check
