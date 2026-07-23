@@ -9,6 +9,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from check import contrast_ratio
 
 
 class BuildTests(unittest.TestCase):
@@ -42,6 +45,13 @@ class BuildTests(unittest.TestCase):
         self.assertIn("search-dialog", roles)
         self.assertIn("error-state", roles)
         self.assertIn("footer", roles)
+
+    def test_faint_text_meets_wcag_aa_on_all_atlas_surfaces(self) -> None:
+        tokens = json.loads((ROOT / "src/tokens.json").read_text(encoding="utf-8"))
+        faint = tokens["colour"]["text_faint"]
+        for surface in ("bg", "bg_1", "bg_2"):
+            with self.subTest(surface=surface):
+                self.assertGreaterEqual(contrast_ratio(faint, tokens["colour"][surface]), 4.5)
 
     def test_css_has_no_remote_runtime_dependency(self) -> None:
         self.build()
