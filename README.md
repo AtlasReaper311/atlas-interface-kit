@@ -23,6 +23,8 @@
 
 Source tokens, component contracts, and approved repository-local fonts live under `src/`. `scripts/build.py` renders the CSS custom properties, appends the shared component foundations, copies the font faces and JSON contracts into `dist/`, and emits a SHA-256 manifest for every distributed file.
 
+The maintained visual and implementation guidance lives in [`docs/BRAND_REFERENCE.md`](docs/BRAND_REFERENCE.md). The executable tokens and component contracts remain authoritative when prose and source disagree.
+
 Product-specific controls remain in their owning repositories. Ramone conversation controls, System SYMPHONY audio controls, Work galleries, Signal Garden instruments, and System Map nodes consume the shared foundation without moving ownership into this repository.
 
 ## Bundle contract
