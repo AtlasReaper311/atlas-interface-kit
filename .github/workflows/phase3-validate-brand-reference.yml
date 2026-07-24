@@ -36,7 +36,9 @@ jobs:
             python3 -m py_compile scripts/build.py scripts/check.py
             python3 scripts/check.py
             python3 -m unittest discover -s tests -v
-            git diff --exit-code
+            git diff --exit-code -- . \
+              ':!.phase3-brand-reference-validation.json' \
+              ':!.phase3-brand-reference-validation.log'
             git diff --check
           ) > .phase3-brand-reference-validation.log 2>&1
           status=$?
