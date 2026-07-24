@@ -38,9 +38,18 @@ git tag -a v0.2.0 -m "atlas-interface-kit v0.2.0"
 git push origin v0.2.0
 ```
 
-The release workflow validates the bundle again, builds the deterministic archive, and creates a GitHub Release for the tag.
+The release workflow validates the bundle again and uploads the deterministic archive as a short-retention workflow artifact.
 
-Manual `workflow_dispatch` is available for creating a release from an existing tag, but it must use a tag in the form `v<version>`.
+Manual `workflow_dispatch` is available for building an artifact from an existing tag, but it must use a tag in the form `v<version>`.
+
+After reviewing the workflow artifact, publish the GitHub Release explicitly:
+
+```bash
+gh release create v0.2.0 reports/release/* \
+  --title "atlas-interface-kit v0.2.0" \
+  --notes-file reports/release/atlas-interface-kit-0.2.0.release-manifest.json \
+  --verify-tag
+```
 
 ## Rollback
 
