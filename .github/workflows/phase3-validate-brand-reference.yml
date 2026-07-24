@@ -31,13 +31,14 @@ jobs:
         run: |
           set -uo pipefail
           set +e
-          {
+          (
+            set -euo pipefail
             python3 -m py_compile scripts/build.py scripts/check.py
             python3 scripts/check.py
             python3 -m unittest discover -s tests -v
             git diff --exit-code
             git diff --check
-          } > .phase3-brand-reference-validation.log 2>&1
+          ) > .phase3-brand-reference-validation.log 2>&1
           status=$?
           set -e
           if [ "${status}" -eq 0 ]
