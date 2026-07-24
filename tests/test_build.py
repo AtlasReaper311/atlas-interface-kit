@@ -20,16 +20,35 @@ class BuildTests(unittest.TestCase):
 
     def test_build_is_deterministic(self) -> None:
         self.build()
-        first = {path.name: path.read_bytes() for path in sorted(DIST.iterdir()) if path.is_file()}
+        first = {
+            path.relative_to(DIST).as_posix(): path.read_bytes()
+            for path in sorted(DIST.rglob("*"))
+            if path.is_file()
+        }
         self.build()
-        second = {path.name: path.read_bytes() for path in sorted(DIST.iterdir()) if path.is_file()}
+        second = {
+            path.relative_to(DIST).as_posix(): path.read_bytes()
+            for path in sorted(DIST.rglob("*"))
+            if path.is_file()
+        }
         self.assertEqual(first, second)
 
     def test_manifest_matches_every_distributed_file(self) -> None:
         self.build()
         manifest = json.loads((DIST / "manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            {"atlas-interface-kit.css", "components.json", "tokens.json"},
+            {
+                "atlas-fonts.css",
+                "atlas-interface-kit.css",
+                "components.json",
+                "fonts/dm-serif-display-400-italic.woff2",
+                "fonts/dm-serif-display-400.woff2",
+                "fonts/ibm-plex-mono-400.woff2",
+                "fonts/ibm-plex-mono-500.woff2",
+                "licenses/DM-Serif-Display-OFL.txt",
+                "licenses/IBM-Plex-Mono-OFL.txt",
+                "tokens.json",
+            },
             set(manifest["files"]),
         )
         for name, record in manifest["files"].items():
@@ -55,9 +74,25 @@ class BuildTests(unittest.TestCase):
 
     def test_css_has_no_remote_runtime_dependency(self) -> None:
         self.build()
-        css = (DIST / "atlas-interface-kit.css").read_text(encoding="utf-8")
-        self.assertNotIn("http://", css)
-        self.assertNotIn("https://", css)
+        for name in ("atlas-interface-kit.css", "atlas-fonts.css"):
+            with self.subTest(name=name):
+                css = (DIST / name).read_text(encoding="utf-8")
+                self.assertNotIn("http://", css)
+                self.assertNotIn("https://", css)
+
+    def test_fonts_are_woff2_and_ship_with_their_licences(self) -> None:
+        self.build()
+        fonts = sorted((DIST / "fonts").glob("*.woff2"))
+        self.assertEqual(4, len(fonts))
+        for font in fonts:
+            with self.subTest(font=font.name):
+                self.assertEqual(b"wOF2", font.read_bytes()[:4])
+
+        for licence in sorted((DIST / "licenses").glob("*.txt")):
+            with self.subTest(licence=licence.name):
+                text = licence.read_text(encoding="utf-8")
+                self.assertIn("SIL OPEN FONT LICENSE", text)
+                self.assertIn("Version 1.1", text)
 
 
 if __name__ == "__main__":

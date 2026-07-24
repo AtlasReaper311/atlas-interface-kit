@@ -3,13 +3,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 CONTRACT_VERSION = "2.0.0"
 
 
@@ -75,17 +76,28 @@ def main() -> int:
 
     token_bytes = canonical_json(tokens)
     component_bytes = canonical_json(components)
+    font_css_bytes = (
+        (SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n"
+    ).encode("utf-8")
     css_source = (SRC / "components.css").read_text(encoding="utf-8").strip() + "\n"
     css_bytes = (css_variables(tokens) + css_source).encode("utf-8")
 
+    if DIST.exists():
+        shutil.rmtree(DIST)
     DIST.mkdir(parents=True, exist_ok=True)
     outputs = {
         "atlas-interface-kit.css": css_bytes,
+        "atlas-fonts.css": font_css_bytes,
         "tokens.json": token_bytes,
         "components.json": component_bytes,
     }
+    for directory in ("fonts", "licenses"):
+        for source in sorted((SRC / directory).iterdir()):
+            outputs[f"{directory}/{source.name}"] = source.read_bytes()
     for name, data in outputs.items():
-        (DIST / name).write_bytes(data)
+        path = DIST / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
 
     manifest = {
         "schema_version": "atlas-interface-kit/bundle/v1",

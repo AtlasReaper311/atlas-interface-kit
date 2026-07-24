@@ -9,6 +9,7 @@ This document defines how Atlas Systems repositories consume `atlas-interface-ki
 A consumer copies these files from one pinned release:
 
 - `atlas-interface-kit.css`;
+- `atlas-fonts.css`, `fonts/`, and `licenses/` when consuming the approved typefaces;
 - `tokens.json` when machine-readable tokens are required;
 - `components.json` when repository-native validation uses canonical selectors;
 - `manifest.json` for fingerprint verification.

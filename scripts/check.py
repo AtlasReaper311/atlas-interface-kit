@@ -10,7 +10,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 MIN_TEXT_CONTRAST = 4.5
 
 EXPECTED_ROLES = {
@@ -96,6 +96,13 @@ def main() -> int:
     require("prefers-reduced-motion" in css, "reduced-motion foundation is missing")
     for role, selector in role_map.items():
         require(selector in css, f"generated CSS missing selector for {role}: {selector}")
+
+    font_css = (DIST / "atlas-fonts.css").read_text(encoding="utf-8")
+    require("http://" not in font_css and "https://" not in font_css, "font CSS must not contain remote dependencies")
+    require(font_css.count("@font-face") == 4, "font CSS must declare the four approved faces")
+    require(font_css.count("font-display: swap") == 4, "every font face must render with swap")
+    require("IBM Plex Mono" in font_css, "IBM Plex Mono declaration is missing")
+    require("DM Serif Display" in font_css, "DM Serif Display declaration is missing")
 
     for name, record in manifest["files"].items():
         path = DIST / name
