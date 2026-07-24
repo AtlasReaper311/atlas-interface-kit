@@ -57,7 +57,7 @@ Validation checks deterministic output, immutable brand and accessibility tokens
 
 ## Release process
 
-A release updates the source contracts and generated bundle in the same pull request. Adopted repositories receive separate automated update pull requests, run their own tests and previews, and require manual visual approval before merge.
+A release updates the source contracts, generated bundle, and `VERSION` in the same pull request. The deterministic GitHub Release artifact contains the `dist/` bundle, the Brand Reference, the Consumer Contract, the licence, and a release manifest with SHA-256 fingerprints. See `docs/RELEASE.md`.
 
 Merging this repository does not deploy a public interface. Production rollout remains owned by each consuming repository.
 
