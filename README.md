@@ -12,8 +12,8 @@
 ```
 
 [![CI](https://github.com/AtlasReaper311/atlas-interface-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/AtlasReaper311/atlas-interface-kit/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-0.1.1-f5a623?style=flat-square&labelColor=0a0a0f)
-![Assets](https://img.shields.io/badge/assets-CSS%20%2B%20JSON-4ade80?style=flat-square&labelColor=0a0a0f)
+![Version](https://img.shields.io/badge/version-0.2.0-f5a623?style=flat-square&labelColor=0a0a0f)
+![Assets](https://img.shields.io/badge/assets-CSS%20%2B%20JSON%20%2B%20fonts-4ade80?style=flat-square&labelColor=0a0a0f)
 ![Runtime](https://img.shields.io/badge/runtime-repository--local-aaa9a0?style=flat-square&labelColor=0a0a0f)
 ![License](https://img.shields.io/badge/license-MIT-aaa9a0?style=flat-square&labelColor=0a0a0f)
 
@@ -21,7 +21,7 @@
 
 ## Architecture
 
-Source tokens and component contracts live under `src/`. `scripts/build.py` renders the CSS custom properties, appends the shared component foundations, copies the JSON contracts into `dist/`, and emits a SHA-256 manifest for every distributed file.
+Source tokens, component contracts, and approved repository-local fonts live under `src/`. `scripts/build.py` renders the CSS custom properties, appends the shared component foundations, copies the font faces and JSON contracts into `dist/`, and emits a SHA-256 manifest for every distributed file.
 
 Product-specific controls remain in their owning repositories. Ramone conversation controls, System SYMPHONY audio controls, Work galleries, Signal Garden instruments, and System Map nodes consume the shared foundation without moving ownership into this repository.
 
@@ -30,9 +30,11 @@ Product-specific controls remain in their owning repositories. Ramone conversati
 The versioned release bundle contains:
 
 - `dist/atlas-interface-kit.css` for shared tokens and component foundations;
+- `dist/atlas-fonts.css` and `dist/fonts/` for the approved repository-local typefaces;
 - `dist/tokens.json` for machine-readable token values;
 - `dist/components.json` for canonical component roles and selectors;
 - `dist/manifest.json` for file sizes and SHA-256 fingerprints.
+- `dist/licenses/` for the bundled font licences.
 
 Consumers copy pinned release files into their own repository. Runtime imports from this repository or another Atlas Systems domain are prohibited.
 
@@ -49,7 +51,7 @@ python3 -m unittest discover -s tests -v
 git diff --check
 ```
 
-Validation checks deterministic output, immutable brand and accessibility tokens, WCAG AA contrast for readable faint text on every Atlas surface, all approved component roles, distributed file fingerprints, repository-local runtime behaviour, and generated-file cleanliness.
+Validation checks deterministic output, immutable brand and accessibility tokens, WCAG AA contrast for readable faint text on every Atlas surface, all approved component roles, licensed repository-local font faces, distributed file fingerprints, repository-local runtime behaviour, and generated-file cleanliness.
 
 ## Release process
 
@@ -59,7 +61,7 @@ Merging this repository does not deploy a public interface. Production rollout r
 
 ## Licence
 
-This repository is released under the MIT License. See `LICENSE`.
+The interface-kit source is released under the MIT License. See `LICENSE`. Bundled fonts remain under the SIL Open Font License included in `dist/licenses/`.
 
 ## How it fits into Atlas Systems
 
