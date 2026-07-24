@@ -4,6 +4,8 @@
 
 This document defines how Atlas Systems repositories consume `atlas-interface-kit` without introducing runtime coupling.
 
+[`BRAND_REFERENCE.md`](BRAND_REFERENCE.md) describes the maintained visual and implementation guidance. Executable tokens, component contracts, generated files, and fingerprints remain the source of truth.
+
 ## Required distribution model
 
 A consumer copies these files from one pinned release:
@@ -14,7 +16,7 @@ A consumer copies these files from one pinned release:
 - `components.json` when repository-native validation uses canonical selectors;
 - `manifest.json` for fingerprint verification.
 
-A consumer must not load CSS or JavaScript from this repository at runtime. The copied bundle belongs to the consumer deployment and remains available when another Atlas Systems surface is unavailable.
+A consumer must not load CSS, JavaScript, or fonts from this repository at runtime. The copied bundle belongs to the consumer deployment and remains available when another Atlas Systems surface is unavailable.
 
 ## Verification
 
