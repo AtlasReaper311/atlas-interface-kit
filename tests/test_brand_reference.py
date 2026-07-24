@@ -22,12 +22,14 @@ class BrandReferenceTests(unittest.TestCase):
         self.assertIn("AtlasReaper311/atlas-infra", self.reference)
 
     def test_reference_matches_executable_colour_and_font_authority(self) -> None:
+        colours = self.reference.split("## Colours", 1)[1].split("## Typography", 1)[0]
         for value in self.tokens["colour"].values():
             with self.subTest(value=value):
-                self.assertIn(f"`{value}`", self.reference)
+                self.assertIn(f"`{value}`", colours)
         self.assertIn("`DM Serif Display`", self.reference)
         self.assertIn("`IBM Plex Mono`", self.reference)
-        self.assertNotIn("#555560", self.reference)
+        self.assertNotIn("#555560", colours)
+        self.assertIn("Earlier loose copies of the Brand Reference listed `#555560`", self.reference)
 
     def test_reference_prohibits_remote_font_loading(self) -> None:
         lowered = self.reference.lower()
