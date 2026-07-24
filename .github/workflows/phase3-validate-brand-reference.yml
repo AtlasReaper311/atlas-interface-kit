@@ -27,20 +27,30 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
-      - name: Validate bundle and Brand Reference
+      - name: Validate and record exact result
         run: |
-          set -euo pipefail
-          python3 -m py_compile scripts/build.py scripts/check.py
-          python3 scripts/check.py
-          python3 -m unittest discover -s tests -v
-          git diff --exit-code
-          git diff --check
-      - name: Commit validation marker
-        run: |
-          set -euo pipefail
-          printf '%s\n' '{"schema_version":"atlas-interface-kit/brand-reference-validation/v1","result":"pass"}' > .phase3-brand-reference-validation.json
-          git add .phase3-brand-reference-validation.json
+          set -uo pipefail
+          set +e
+          {
+            python3 -m py_compile scripts/build.py scripts/check.py
+            python3 scripts/check.py
+            python3 -m unittest discover -s tests -v
+            git diff --exit-code
+            git diff --check
+          } > .phase3-brand-reference-validation.log 2>&1
+          status=$?
+          set -e
+          if [ "${status}" -eq 0 ]
+          then
+            result=pass
+          else
+            result=fail
+          fi
+          printf '{"schema_version":"atlas-interface-kit/brand-reference-validation/v1","result":"%s"}\n' "${result}" > .phase3-brand-reference-validation.json
+          git add .phase3-brand-reference-validation.json .phase3-brand-reference-validation.log
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "test: record Brand Reference validation"
+          git commit -m "test: record Brand Reference validation result"
           git push origin HEAD:docs/canonical-brand-reference
+          cat .phase3-brand-reference-validation.log
+          exit "${status}"
