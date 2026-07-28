@@ -16,10 +16,14 @@ class BrandReferenceTests(unittest.TestCase):
     def test_reference_is_repository_owned_and_linked(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         consumer = (ROOT / "docs" / "CONSUMER_CONTRACT.md").read_text(encoding="utf-8")
+        foundation = (ROOT / "docs" / "FOUNDATION_EXTENSION.md").read_text(encoding="utf-8")
         self.assertIn("docs/BRAND_REFERENCE.md", readme)
+        self.assertIn("docs/FOUNDATION_EXTENSION.md", readme)
         self.assertIn("BRAND_REFERENCE.md", consumer)
+        self.assertIn("FOUNDATION_EXTENSION.md", consumer)
         self.assertIn("AtlasReaper311/atlas-interface-kit", self.reference)
         self.assertIn("AtlasReaper311/atlas-infra", self.reference)
+        self.assertIn("public-interface-foundation-extension-v1.json", foundation)
 
     def test_reference_matches_executable_colour_and_font_authority(self) -> None:
         colours = self.reference.split("## Colours", 1)[1].split("## Typography", 1)[0]
