@@ -10,8 +10,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 CONTRACT_VERSION = "2.0.0"
+FOUNDATION_EXTENSION_VERSION = "1.0.0"
 
 
 def canonical_json(value: Any) -> bytes:
@@ -23,11 +24,7 @@ def sha256(data: bytes) -> str:
 
 
 def css_variables(tokens: dict[str, Any]) -> str:
-    lines = [
-        f"/* Atlas Interface Kit v{VERSION} generated tokens. */",
-        ":root {",
-        "  color-scheme: dark;",
-    ]
+    lines = [f"/* Atlas Interface Kit v{VERSION} generated tokens. */", ":root {", "  color-scheme: dark;"]
     for name, value in tokens["colour"].items():
         lines.append(f"  --atlas-{name.replace('_', '-')}: {value};")
     for index, value in enumerate(tokens["space_px"], start=1):
@@ -69,16 +66,21 @@ def file_record(data: bytes) -> dict[str, Any]:
 def main() -> int:
     tokens = json.loads((SRC / "tokens.json").read_text(encoding="utf-8"))
     components = json.loads((SRC / "components.json").read_text(encoding="utf-8"))
-    if tokens.get("version") != VERSION or components.get("version") != VERSION:
+    semantics = json.loads((SRC / "semantics.json").read_text(encoding="utf-8"))
+    if any(document.get("version") != VERSION for document in (tokens, components, semantics)):
         raise SystemExit("source version does not match build version")
     if tokens.get("contract_version") != CONTRACT_VERSION:
         raise SystemExit("token contract version does not match build contract")
+    authority = semantics.get("authority", {})
+    if authority.get("base_contract_version") != CONTRACT_VERSION:
+        raise SystemExit("semantic base contract version does not match build contract")
+    if authority.get("foundation_extension_version") != FOUNDATION_EXTENSION_VERSION:
+        raise SystemExit("semantic foundation extension version does not match build contract")
 
     token_bytes = canonical_json(tokens)
     component_bytes = canonical_json(components)
-    font_css_bytes = (
-        (SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n"
-    ).encode("utf-8")
+    semantic_bytes = canonical_json(semantics)
+    font_css_bytes = ((SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n").encode("utf-8")
     css_source = (SRC / "components.css").read_text(encoding="utf-8").strip() + "\n"
     css_bytes = (css_variables(tokens) + css_source).encode("utf-8")
 
@@ -90,6 +92,7 @@ def main() -> int:
         "atlas-fonts.css": font_css_bytes,
         "tokens.json": token_bytes,
         "components.json": component_bytes,
+        "semantics.json": semantic_bytes,
     }
     for directory in ("fonts", "licenses"):
         for source in sorted((SRC / directory).iterdir()):
@@ -103,7 +106,9 @@ def main() -> int:
         "schema_version": "atlas-interface-kit/bundle/v1",
         "version": VERSION,
         "contract_version": CONTRACT_VERSION,
+        "foundation_extension_version": FOUNDATION_EXTENSION_VERSION,
         "component_role_count": len(components["roles"]),
+        "semantic_contract_count": 3,
         "files": {name: file_record(data) for name, data in sorted(outputs.items())},
     }
     (DIST / "manifest.json").write_bytes(canonical_json(manifest))
