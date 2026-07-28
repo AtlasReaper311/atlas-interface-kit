@@ -24,36 +24,40 @@ def sha256(data: bytes) -> str:
 
 
 def css_variables(tokens: dict[str, Any]) -> str:
-    lines = [f"/* Atlas Interface Kit v{VERSION} generated tokens. */", ":root {", "  color-scheme: dark;"]
-    for name, value in tokens["colour"].items():
+    lines = [
+        f"/* Atlas Interface Kit v{VERSION} generated tokens. */",
+        ":root {",
+        "  color-scheme: dark;",
+    ]
+    for name, value in sorted(tokens["colour"].items()):
         lines.append(f"  --atlas-{name.replace('_', '-')}: {value};")
     for index, value in enumerate(tokens["space_px"], start=1):
         lines.append(f"  --atlas-space-{index}: {value}px;")
-    for name, value in tokens["radius_px"].items():
+    for name, value in sorted(tokens["radius_px"].items()):
         lines.append(f"  --atlas-radius-{name}: {value}px;")
-    for name, value in tokens["control_px"].items():
+    for name, value in sorted(tokens["control_px"].items()):
         css_name = "touch-min" if name == "touch_min" else f"control-{name}"
         lines.append(f"  --atlas-{css_name}: {value}px;")
-    for name, value in tokens["card_padding_px"].items():
+    for name, value in sorted(tokens["card_padding_px"].items()):
         lines.append(f"  --atlas-card-{name}: {value}px;")
-    for name, value in tokens["content_px"].items():
+    for name, value in sorted(tokens["content_px"].items()):
         css_name = "content" if name == "standard" else f"content-{name}"
         if name == "prose":
             css_name = "prose"
         lines.append(f"  --atlas-{css_name}: {value}px;")
-    for name, value in tokens["type_px"].items():
+    for name, value in sorted(tokens["type_px"].items()):
         lines.append(f"  --atlas-type-{name}: {value}px;")
-    for name, value in tokens["motion_ms"].items():
+    for name, value in sorted(tokens["motion_ms"].items()):
         lines.append(f"  --atlas-motion-{name}: {value}ms;")
-    for name, value in tokens["easing"].items():
+    for name, value in sorted(tokens["easing"].items()):
         lines.append(f"  --atlas-easing-{name}: {value};")
-    for name, value in tokens["breakpoint_px"].items():
+    for name, value in sorted(tokens["breakpoint_px"].items()):
         lines.append(f"  --atlas-breakpoint-{name}: {value}px;")
-    for name, value in tokens["z_index"].items():
+    for name, value in sorted(tokens["z_index"].items()):
         lines.append(f"  --atlas-z-{name}: {value};")
-    for name, value in tokens["shadow"].items():
+    for name, value in sorted(tokens["shadow"].items()):
         lines.append(f"  --atlas-shadow-{name}: {value};")
-    for name, value in tokens["font"].items():
+    for name, value in sorted(tokens["font"].items()):
         lines.append(f"  --atlas-font-{name}: {value};")
     lines.extend(["}", ""])
     return "\n".join(lines)
@@ -80,7 +84,9 @@ def main() -> int:
     token_bytes = canonical_json(tokens)
     component_bytes = canonical_json(components)
     semantic_bytes = canonical_json(semantics)
-    font_css_bytes = ((SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n").encode("utf-8")
+    font_css_bytes = (
+        (SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n"
+    ).encode("utf-8")
     css_source = (SRC / "components.css").read_text(encoding="utf-8").strip() + "\n"
     css_bytes = (css_variables(tokens) + css_source).encode("utf-8")
 
