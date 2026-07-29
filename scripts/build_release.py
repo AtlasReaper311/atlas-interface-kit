@@ -16,22 +16,13 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = "atlas-interface-kit"
 SCHEMA_VERSION = "atlas-release-artifact/v1"
 RELEASE_MEMBERS = (
-    "VERSION",
-    "README.md",
-    "LICENSE",
-    "docs/BRAND_REFERENCE.md",
-    "docs/CONSUMER_CONTRACT.md",
-    "dist/atlas-fonts.css",
-    "dist/atlas-interface-kit.css",
-    "dist/components.json",
-    "dist/manifest.json",
-    "dist/tokens.json",
-    "dist/fonts/dm-serif-display-400-italic.woff2",
-    "dist/fonts/dm-serif-display-400.woff2",
-    "dist/fonts/ibm-plex-mono-400.woff2",
-    "dist/fonts/ibm-plex-mono-500.woff2",
-    "dist/licenses/DM-Serif-Display-OFL.txt",
-    "dist/licenses/IBM-Plex-Mono-OFL.txt",
+    "VERSION", "README.md", "LICENSE", "docs/BRAND_REFERENCE.md",
+    "docs/CONSUMER_CONTRACT.md", "docs/FOUNDATION_EXTENSION.md",
+    "dist/atlas-fonts.css", "dist/atlas-interface-kit.css", "dist/components.json",
+    "dist/manifest.json", "dist/semantics.json", "dist/tokens.json",
+    "dist/fonts/dm-serif-display-400-italic.woff2", "dist/fonts/dm-serif-display-400.woff2",
+    "dist/fonts/ibm-plex-mono-400.woff2", "dist/fonts/ibm-plex-mono-500.woff2",
+    "dist/licenses/DM-Serif-Display-OFL.txt", "dist/licenses/IBM-Plex-Mono-OFL.txt",
 )
 
 
@@ -80,7 +71,6 @@ def write_tarball(output_dir: Path, version: str, manifest: dict[str, Any]) -> P
     prefix = f"{PACKAGE}-{version}"
     entries = [(relative, (ROOT / relative).read_bytes()) for relative in RELEASE_MEMBERS]
     entries.append(("release-manifest.json", canonical_json(manifest)))
-
     with archive_path.open("wb") as raw_file:
         with gzip.GzipFile(fileobj=raw_file, mode="wb", filename="", mtime=0) as gzip_file:
             with tarfile.open(fileobj=gzip_file, mode="w") as archive:
@@ -116,13 +106,10 @@ def build_release(output_dir: Path, *, validate: bool = True) -> dict[str, str]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Build a deterministic Atlas Interface Kit release artifact."
-    )
+    parser = argparse.ArgumentParser(description="Build a deterministic Atlas Interface Kit release artifact.")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "reports" / "release")
     parser.add_argument("--skip-validation", action="store_true")
     args = parser.parse_args()
-
     result = build_release(args.output_dir, validate=not args.skip_validation)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

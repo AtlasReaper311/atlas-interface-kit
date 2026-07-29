@@ -10,8 +10,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 CONTRACT_VERSION = "2.0.0"
+FOUNDATION_EXTENSION_VERSION = "1.0.0"
 
 
 def canonical_json(value: Any) -> bytes:
@@ -28,35 +29,35 @@ def css_variables(tokens: dict[str, Any]) -> str:
         ":root {",
         "  color-scheme: dark;",
     ]
-    for name, value in tokens["colour"].items():
+    for name, value in sorted(tokens["colour"].items()):
         lines.append(f"  --atlas-{name.replace('_', '-')}: {value};")
     for index, value in enumerate(tokens["space_px"], start=1):
         lines.append(f"  --atlas-space-{index}: {value}px;")
-    for name, value in tokens["radius_px"].items():
+    for name, value in sorted(tokens["radius_px"].items()):
         lines.append(f"  --atlas-radius-{name}: {value}px;")
-    for name, value in tokens["control_px"].items():
+    for name, value in sorted(tokens["control_px"].items()):
         css_name = "touch-min" if name == "touch_min" else f"control-{name}"
         lines.append(f"  --atlas-{css_name}: {value}px;")
-    for name, value in tokens["card_padding_px"].items():
+    for name, value in sorted(tokens["card_padding_px"].items()):
         lines.append(f"  --atlas-card-{name}: {value}px;")
-    for name, value in tokens["content_px"].items():
+    for name, value in sorted(tokens["content_px"].items()):
         css_name = "content" if name == "standard" else f"content-{name}"
         if name == "prose":
             css_name = "prose"
         lines.append(f"  --atlas-{css_name}: {value}px;")
-    for name, value in tokens["type_px"].items():
+    for name, value in sorted(tokens["type_px"].items()):
         lines.append(f"  --atlas-type-{name}: {value}px;")
-    for name, value in tokens["motion_ms"].items():
+    for name, value in sorted(tokens["motion_ms"].items()):
         lines.append(f"  --atlas-motion-{name}: {value}ms;")
-    for name, value in tokens["easing"].items():
+    for name, value in sorted(tokens["easing"].items()):
         lines.append(f"  --atlas-easing-{name}: {value};")
-    for name, value in tokens["breakpoint_px"].items():
+    for name, value in sorted(tokens["breakpoint_px"].items()):
         lines.append(f"  --atlas-breakpoint-{name}: {value}px;")
-    for name, value in tokens["z_index"].items():
+    for name, value in sorted(tokens["z_index"].items()):
         lines.append(f"  --atlas-z-{name}: {value};")
-    for name, value in tokens["shadow"].items():
+    for name, value in sorted(tokens["shadow"].items()):
         lines.append(f"  --atlas-shadow-{name}: {value};")
-    for name, value in tokens["font"].items():
+    for name, value in sorted(tokens["font"].items()):
         lines.append(f"  --atlas-font-{name}: {value};")
     lines.extend(["}", ""])
     return "\n".join(lines)
@@ -69,13 +70,20 @@ def file_record(data: bytes) -> dict[str, Any]:
 def main() -> int:
     tokens = json.loads((SRC / "tokens.json").read_text(encoding="utf-8"))
     components = json.loads((SRC / "components.json").read_text(encoding="utf-8"))
-    if tokens.get("version") != VERSION or components.get("version") != VERSION:
+    semantics = json.loads((SRC / "semantics.json").read_text(encoding="utf-8"))
+    if any(document.get("version") != VERSION for document in (tokens, components, semantics)):
         raise SystemExit("source version does not match build version")
     if tokens.get("contract_version") != CONTRACT_VERSION:
         raise SystemExit("token contract version does not match build contract")
+    authority = semantics.get("authority", {})
+    if authority.get("base_contract_version") != CONTRACT_VERSION:
+        raise SystemExit("semantic base contract version does not match build contract")
+    if authority.get("foundation_extension_version") != FOUNDATION_EXTENSION_VERSION:
+        raise SystemExit("semantic foundation extension version does not match build contract")
 
     token_bytes = canonical_json(tokens)
     component_bytes = canonical_json(components)
+    semantic_bytes = canonical_json(semantics)
     font_css_bytes = (
         (SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n"
     ).encode("utf-8")
@@ -90,6 +98,7 @@ def main() -> int:
         "atlas-fonts.css": font_css_bytes,
         "tokens.json": token_bytes,
         "components.json": component_bytes,
+        "semantics.json": semantic_bytes,
     }
     for directory in ("fonts", "licenses"):
         for source in sorted((SRC / directory).iterdir()):
@@ -103,7 +112,9 @@ def main() -> int:
         "schema_version": "atlas-interface-kit/bundle/v1",
         "version": VERSION,
         "contract_version": CONTRACT_VERSION,
+        "foundation_extension_version": FOUNDATION_EXTENSION_VERSION,
         "component_role_count": len(components["roles"]),
+        "semantic_contract_count": 3,
         "files": {name: file_record(data) for name, data in sorted(outputs.items())},
     }
     (DIST / "manifest.json").write_bytes(canonical_json(manifest))

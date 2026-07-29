@@ -73,6 +73,14 @@
       "selector": ".atlas-table-wrap"
     },
     {
+      "role": "breadcrumb-navigation",
+      "selector": ".atlas-breadcrumbs"
+    },
+    {
+      "role": "status-announcement",
+      "selector": ".atlas-status-announcement"
+    },
+    {
       "role": "search-dialog",
       "selector": ".atlas-search-dialog"
     },
@@ -102,5 +110,5 @@
     }
   ],
   "schema_version": "atlas-interface-kit/components/v1",
-  "version": "0.2.0"
+  "version": "0.3.0"
 }

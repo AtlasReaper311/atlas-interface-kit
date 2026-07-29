@@ -11,6 +11,7 @@ The release version is declared in:
 - `scripts/check.py`;
 - `src/tokens.json`;
 - `src/components.json`;
+- `src/semantics.json`;
 - the README version badge.
 
 All version declarations must move together in the same pull request.
@@ -27,15 +28,15 @@ python3 scripts/build_release.py --output-dir reports/release
 git diff --check
 ```
 
-The release artifact contains the generated `dist/` bundle, the Brand Reference, the Consumer Contract, the licence, and a release manifest with SHA-256 fingerprints.
+The release artifact contains the generated `dist/` bundle, the Brand Reference, the Consumer Contract, the measured Foundation Extension, the licence, and a release manifest with SHA-256 fingerprints.
 
 ## Publish
 
 Create an annotated tag that matches `VERSION`, for example:
 
 ```bash
-git tag -a v0.2.0 -m "atlas-interface-kit v0.2.0"
-git push origin v0.2.0
+git tag -a v0.3.0 -m "atlas-interface-kit v0.3.0"
+git push origin v0.3.0
 ```
 
 The release workflow validates the bundle again and uploads the deterministic archive as a short-retention workflow artifact.
@@ -45,9 +46,9 @@ Manual `workflow_dispatch` is available for building an artifact from an existin
 After reviewing the workflow artifact, publish the GitHub Release explicitly:
 
 ```bash
-gh release create v0.2.0 reports/release/* \
-  --title "atlas-interface-kit v0.2.0" \
-  --notes-file reports/release/atlas-interface-kit-0.2.0.release-manifest.json \
+gh release create v0.3.0 reports/release/* \
+  --title "atlas-interface-kit v0.3.0" \
+  --notes-file reports/release/atlas-interface-kit-0.3.0.release-manifest.json \
   --verify-tag
 ```
 
