@@ -1,4 +1,20 @@
 {
+  "footer": {
+    "base_selector": ".atlas-footer",
+    "slot_selectors": {
+      "identity": ".atlas-footer__identity",
+      "context": ".atlas-footer__context",
+      "evidence": ".atlas-footer__evidence",
+      "sequence": ".atlas-footer__sequence",
+      "estate_escape": ".atlas-footer__escape"
+    },
+    "variant_selectors": {
+      "estate": ".atlas-footer--estate",
+      "product": ".atlas-footer--product",
+      "tool": ".atlas-footer--tool",
+      "editorial": ".atlas-footer--editorial"
+    }
+  },
   "roles": [
     {"role": "global-header", "selector": ".atlas-global-header"},
     {"role": "product-strip", "selector": ".atlas-product-strip"},
@@ -29,5 +45,5 @@
     {"role": "footer", "selector": ".atlas-footer"}
   ],
   "schema_version": "atlas-interface-kit/components/v1",
-  "version": "0.3.0"
+  "version": "0.4.0"
 }
