@@ -1,6 +1,8 @@
 {
   "authority": {
     "base_contract_version": "2.0.0",
+    "footer_extension_source": "AtlasReaper311/atlas-infra:policy/public-interface-footer-extension-v1.json",
+    "footer_extension_version": "1.0.0",
     "foundation_extension_source": "AtlasReaper311/atlas-infra:policy/public-interface-foundation-extension-v1.json",
     "foundation_extension_version": "1.0.0"
   },
@@ -48,6 +50,46 @@
     "reporting_only_is_budget": false,
     "reporting_only_viewports_px": [1920]
   },
+  "footer_authority": {
+    "accessible_name_required_when_multiple": true,
+    "behaviour": {
+      "atlas_owned_html_same_tab_required": true,
+      "external_links_new_tab_required": true,
+      "external_links_rel": "noopener noreferrer",
+      "fixed_bottom_navigation_clearance_required": true,
+      "global_navigation_duplication_forbidden": true,
+      "minimum_touch_target_px": 44,
+      "mobile_wrap_required": true,
+      "purpose_specific_labels_required": true,
+      "reduced_motion_required": true,
+      "visible_focus_required": true
+    },
+    "empty_footer_forbidden": true,
+    "empty_slots_forbidden": true,
+    "ownership": {
+      "article_sequence_owner": "AtlasReaper311/atlas-scheduler",
+      "consumer_content_owner": true,
+      "implementation_owner": "AtlasReaper311/atlas-interface-kit",
+      "shared_runtime_javascript_forbidden": true
+    },
+    "role": "footer",
+    "selector": ".atlas-footer",
+    "semantic_element": "footer",
+    "single_primary_footer_required": true,
+    "slots": {
+      "identity": {"content_owner": "consumer", "required_globally": true, "selector": ".atlas-footer__identity"},
+      "context": {"content_owner": "consumer", "required_globally": false, "selector": ".atlas-footer__context"},
+      "evidence": {"content_owner": "consumer", "required_globally": false, "selector": ".atlas-footer__evidence"},
+      "sequence": {"article_owner": "AtlasReaper311/atlas-scheduler", "content_owner": "consumer-or-publisher", "required_globally": false, "selector": ".atlas-footer__sequence"},
+      "estate_escape": {"content_owner": "consumer", "required_globally": true, "selector": ".atlas-footer__escape"}
+    },
+    "variants": {
+      "estate": {"forbidden_slots": ["sequence"], "optional_slots": ["context", "evidence"], "required_slots": ["identity", "estate_escape"], "selector": ".atlas-footer--estate"},
+      "product": {"forbidden_slots": ["sequence"], "optional_slots": ["context", "evidence"], "required_slots": ["identity", "estate_escape"], "selector": ".atlas-footer--product"},
+      "tool": {"forbidden_slots": ["sequence"], "optional_slots": ["evidence"], "required_slots": ["identity", "context", "estate_escape"], "selector": ".atlas-footer--tool"},
+      "editorial": {"forbidden_slots": [], "optional_slots": ["context", "evidence"], "required_slots": ["identity", "sequence", "estate_escape"], "selector": ".atlas-footer--editorial"}
+    }
+  },
   "schema_version": "atlas-interface-kit/semantics/v1",
   "status_announcement": {
     "announce_on": ["meaningful-user-visible-state-transition"],
@@ -62,5 +104,5 @@
     "trigger_owner": "consumer",
     "wording_owner": "consumer"
   },
-  "version": "0.3.0"
+  "version": "0.4.0"
 }
