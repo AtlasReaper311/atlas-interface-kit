@@ -1,4 +1,4 @@
-/* Atlas Interface Kit v0.4.0 generated tokens. */
+/* Atlas Interface Kit v0.5.0 generated tokens. */
 :root {
   color-scheme: dark;
   --atlas-accent: #f5a623;
@@ -62,7 +62,7 @@
   --atlas-font-body: 'IBM Plex Mono', monospace;
   --atlas-font-display: 'DM Serif Display', Georgia, serif;
 }
-/* Atlas Interface Kit v0.4.0 component foundations. */
+/* Atlas Interface Kit v0.5.0 component foundations. */
 .atlas-global-header {
   position: sticky;
   top: 0;
@@ -333,4 +333,87 @@
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* Atlas Interface Kit v0.5.0 evidence-mode foundations. */
+.atlas-evidence-mode {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: var(--atlas-space-2);
+  border: 1px solid var(--atlas-border-hi);
+  border-radius: 999px;
+  padding: 0 var(--atlas-space-3);
+  color: var(--atlas-text-dim);
+  background: var(--atlas-bg-2);
+  font: 500 var(--atlas-type-meta)/1 var(--atlas-font-body);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.atlas-evidence-mode::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  content: "";
+}
+
+.atlas-evidence-mode[data-evidence-mode='measured']::before {
+  background: currentColor;
+}
+
+.atlas-evidence-mode[data-evidence-mode='stale-measured']::before {
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+
+.atlas-evidence-mode[data-evidence-mode='recorded-replay'],
+.atlas-evidence-mode[data-evidence-mode='simulated'] {
+  border-style: dashed;
+}
+
+.atlas-evidence-mode[data-evidence-mode='recorded-replay']::before {
+  border-radius: 1px;
+}
+
+.atlas-evidence-mode[data-evidence-mode='simulated']::before {
+  border-style: dashed;
+}
+
+.atlas-evidence-mode[data-evidence-mode='unavailable'],
+.atlas-evidence-mode[data-evidence-mode='unknown'],
+.atlas-evidence-mode[data-evidence-mode='not-applicable-unscored'] {
+  color: var(--atlas-text-faint);
+}
+
+.atlas-evidence-surface {
+  border: 1px solid var(--atlas-border);
+  border-radius: var(--atlas-radius-md);
+  background: var(--atlas-bg-1);
+}
+
+.atlas-evidence-surface[data-evidence-mode='recorded-replay'],
+.atlas-evidence-surface[data-evidence-mode='simulated'] {
+  border-style: dashed;
+  box-shadow: inset 3px 0 0 var(--atlas-border-hi);
+}
+
+.atlas-evidence-surface[data-evidence-mode='unavailable'],
+.atlas-evidence-surface[data-evidence-mode='unknown'],
+.atlas-evidence-surface[data-evidence-mode='not-applicable-unscored'] {
+  background: color-mix(in srgb, var(--atlas-bg-1) 88%, var(--atlas-bg-2));
+  box-shadow: inset 3px 0 0 var(--atlas-border-hi);
+}
+
+.atlas-evidence-value {
+  color: var(--atlas-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.atlas-evidence-value[data-evidence-mode='unavailable'],
+.atlas-evidence-value[data-evidence-mode='unknown'],
+.atlas-evidence-value[data-evidence-mode='not-applicable-unscored'] {
+  color: var(--atlas-text-dim);
 }

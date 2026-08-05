@@ -1,6 +1,8 @@
 {
   "authority": {
     "base_contract_version": "2.0.0",
+    "evidence_mode_extension_source": "AtlasReaper311/atlas-infra:policy/public-interface-evidence-mode-extension-v1.json",
+    "evidence_mode_extension_version": "1.0.0",
     "footer_extension_source": "AtlasReaper311/atlas-infra:policy/public-interface-footer-extension-v1.json",
     "footer_extension_version": "1.0.0",
     "foundation_extension_source": "AtlasReaper311/atlas-infra:policy/public-interface-foundation-extension-v1.json",
@@ -66,6 +68,110 @@
     "reporting_only_is_budget": false,
     "reporting_only_viewports_px": [
       1920
+    ]
+  },
+  "evidence_mode_authority": {
+    "colour_must_not_be_the_only_signal": true,
+    "directory_and_destination_vocabulary_must_agree": true,
+    "directory_data_modes": [
+      "Live",
+      "Replay",
+      "Generated",
+      "Simulated"
+    ],
+    "evidence_bearing_operational_surfaces_only": true,
+    "fallback_mode_must_remain_visible_across_primary_state_metrics_tables_and_charts": true,
+    "generated_output_definition": "Output produced by the product itself that does not stand in for a measurement or assert the condition of a real system.",
+    "generated_output_is_evidence": false,
+    "generated_product_output_may_retain_product_specific_palette": true,
+    "machine_readable_mode_required": true,
+    "maturity_is_separate_from_evidence_mode": true,
+    "mode_attribute": "data-evidence-mode",
+    "mode_label_selector": ".atlas-evidence-mode",
+    "modes": {
+      "measured": {
+        "definition": "Current evidence obtained from a live bounded source.",
+        "label": "Measured",
+        "numeral_treatment": "plain-measured-value",
+        "semantic_runtime_hue_permitted": true,
+        "source_and_age_required": true
+      },
+      "not-applicable-unscored": {
+        "definition": "The measure does not apply or has been excluded from the scoring denominator.",
+        "label": "Not applicable / unscored",
+        "numeral_treatment": "not-applicable-or-unscored-label",
+        "semantic_runtime_hue_permitted": false,
+        "source_and_age_required": false
+      },
+      "recorded-replay": {
+        "definition": "Captured evidence played back without claiming to be the current condition.",
+        "label": "Recorded replay",
+        "numeral_treatment": "recorded-value-with-replay-marker",
+        "semantic_runtime_hue_permitted": false,
+        "source_and_age_required": true
+      },
+      "simulated": {
+        "definition": "Synthetic values standing in for measurements that were not taken.",
+        "label": "Simulated",
+        "numeral_treatment": "synthetic-value-with-simulation-marker",
+        "semantic_runtime_hue_permitted": false,
+        "source_and_age_required": false
+      },
+      "stale-measured": {
+        "definition": "Previously measured evidence retained after its accepted freshness window.",
+        "label": "Stale measured",
+        "numeral_treatment": "measured-value-with-stale-marker",
+        "semantic_runtime_hue_permitted": true,
+        "source_and_age_required": true
+      },
+      "unavailable": {
+        "definition": "The expected evidence source could not provide evidence.",
+        "label": "Unavailable",
+        "numeral_treatment": "em-dash",
+        "semantic_runtime_hue_permitted": false,
+        "source_and_age_required": false
+      },
+      "unknown": {
+        "definition": "The evidence source, meaning, or state cannot be determined from the available information.",
+        "label": "Unknown",
+        "numeral_treatment": "em-dash",
+        "semantic_runtime_hue_permitted": false,
+        "source_and_age_required": false
+      }
+    },
+    "neutral_surface_modes": [
+      "recorded-replay",
+      "simulated",
+      "unavailable",
+      "unknown",
+      "not-applicable-unscored"
+    ],
+    "ownership": {
+      "consumer_mode_selection_owner": true,
+      "consumer_runtime_state_owner": true,
+      "consumer_source_metadata_owner": true,
+      "implementation_owner": "AtlasReaper311/atlas-interface-kit",
+      "shared_runtime_javascript_forbidden": true
+    },
+    "redundant_signals": [
+      "visible-text-label",
+      "surface-treatment",
+      "numeral-convention"
+    ],
+    "role": "evidence-mode",
+    "runtime_state_attribute": "data-runtime-state",
+    "runtime_state_is_separate_from_evidence_mode": true,
+    "semantic_runtime_hue_modes": [
+      "measured",
+      "stale-measured"
+    ],
+    "surface_selector": ".atlas-evidence-surface",
+    "value_selector": ".atlas-evidence-value",
+    "visible_mode_label_required": true,
+    "zero_may_not_represent": [
+      "unavailable",
+      "unknown",
+      "not-applicable-unscored"
     ]
   },
   "footer_authority": {
@@ -207,5 +313,5 @@
     "trigger_owner": "consumer",
     "wording_owner": "consumer"
   },
-  "version": "0.4.0"
+  "version": "0.5.0"
 }
