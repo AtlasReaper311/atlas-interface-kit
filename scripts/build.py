@@ -69,6 +69,18 @@ def file_record(data: bytes) -> dict[str, Any]:
     return {"bytes": len(data), "sha256": sha256(data)}
 
 
+def versioned_component_css() -> str:
+    lines = (SRC / "components.css").read_text(encoding="utf-8").strip().splitlines()
+    if (
+        not lines
+        or not lines[0].startswith("/* Atlas Interface Kit v")
+        or not lines[0].endswith(" component foundations. */")
+    ):
+        raise SystemExit("component CSS version header is invalid")
+    lines[0] = f"/* Atlas Interface Kit v{VERSION} component foundations. */"
+    return "\n".join(lines)
+
+
 def main() -> int:
     tokens = json.loads((SRC / "tokens.json").read_text(encoding="utf-8"))
     components = json.loads((SRC / "components.json").read_text(encoding="utf-8"))
@@ -94,7 +106,7 @@ def main() -> int:
     component_bytes = canonical_json(components)
     semantic_bytes = canonical_json(semantics)
     font_css_bytes = ((SRC / "fonts.css").read_text(encoding="utf-8").strip() + "\n").encode("utf-8")
-    component_css = (SRC / "components.css").read_text(encoding="utf-8").strip()
+    component_css = versioned_component_css()
     evidence_css = (SRC / "evidence-modes.css").read_text(encoding="utf-8").strip()
     css_bytes = (css_variables(tokens) + component_css + "\n\n" + evidence_css + "\n").encode("utf-8")
 
