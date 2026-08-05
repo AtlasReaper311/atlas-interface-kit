@@ -12,20 +12,20 @@
 ```
 
 [![CI](https://github.com/AtlasReaper311/atlas-interface-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/AtlasReaper311/atlas-interface-kit/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-0.4.0-f5a623?style=flat-square&labelColor=0a0a0f)
+![Version](https://img.shields.io/badge/version-0.5.0-f5a623?style=flat-square&labelColor=0a0a0f)
 ![Assets](https://img.shields.io/badge/assets-CSS%20%2B%20JSON%20%2B%20fonts-4ade80?style=flat-square&labelColor=0a0a0f)
 ![Runtime](https://img.shields.io/badge/runtime-repository--local-aaa9a0?style=flat-square&labelColor=0a0a0f)
 ![License](https://img.shields.io/badge/license-MIT-aaa9a0?style=flat-square&labelColor=0a0a0f)
 
-`atlas-interface-kit` builds deterministic, repository-local browser assets for Atlas Systems public interfaces. It implements the token, component, measured semantic, and footer authority accepted in `AtlasReaper311/atlas-infra` without creating a cross-domain runtime dependency.
+`atlas-interface-kit` builds deterministic, repository-local browser assets for Atlas Systems public interfaces. It implements the accepted token, component, measured semantic, footer, and evidence-mode authority from `AtlasReaper311/atlas-infra` without creating a cross-domain runtime dependency.
 
 ## Architecture
 
-Source tokens, component contracts, semantic contracts, footer selectors, and approved repository-local fonts live under `src/`. `scripts/build.py` renders the CSS custom properties, appends the shared component foundations, copies the font faces and JSON contracts into `dist/`, and emits a SHA-256 manifest for every distributed file.
+Source tokens, component contracts, semantic contracts, evidence-mode selectors, footer selectors, and approved repository-local fonts live under `src/`. `scripts/build.py` renders CSS custom properties, appends the shared component foundations, copies the font faces and JSON contracts into `dist/`, and emits a SHA-256 manifest for every distributed file.
 
-The maintained visual and implementation guidance lives in [`docs/BRAND_REFERENCE.md`](docs/BRAND_REFERENCE.md). The measured Phase 4 semantics are documented in [`docs/FOUNDATION_EXTENSION.md`](docs/FOUNDATION_EXTENSION.md). The Phase 6 footer contract is documented in [`docs/FOOTER_EXTENSION.md`](docs/FOOTER_EXTENSION.md). The executable tokens, components, semantics, footer selectors, and fingerprints remain authoritative when prose and source disagree.
+The maintained visual guidance lives in [`docs/BRAND_REFERENCE.md`](docs/BRAND_REFERENCE.md). The measured foundation semantics are documented in [`docs/FOUNDATION_EXTENSION.md`](docs/FOUNDATION_EXTENSION.md). Footer rules live in [`docs/FOOTER_EXTENSION.md`](docs/FOOTER_EXTENSION.md). Evidence origin and confidence rules live in [`docs/EVIDENCE_MODE_EXTENSION.md`](docs/EVIDENCE_MODE_EXTENSION.md).
 
-Product-specific controls remain in their owning repositories. Ramone conversation controls, System SYMPHONY audio controls, Work galleries, Signal Garden instruments, System Map nodes, footer wording, footer destinations, and article sequencing consume the shared foundation without moving ownership into this repository.
+Product-specific controls remain in their owning repositories. Ramone conversation controls, System SYMPHONY audio controls, Work galleries, Signal Garden instruments, System Map nodes, evidence-source selection, runtime calculations, footer wording, footer destinations, and article sequencing consume the shared foundation without moving ownership into this repository.
 
 ## Bundle contract
 
@@ -34,8 +34,8 @@ The versioned release bundle contains:
 - `dist/atlas-interface-kit.css` for shared tokens and component foundations;
 - `dist/atlas-fonts.css` and `dist/fonts/` for the approved repository-local typefaces;
 - `dist/tokens.json` for machine-readable token values;
-- `dist/components.json` for canonical component roles, footer slots, and footer variants;
-- `dist/semantics.json` for breadcrumb, announcement, dense-overflow, evidence, and footer semantics;
+- `dist/components.json` for canonical component roles, evidence selectors, footer slots, and footer variants;
+- `dist/semantics.json` for breadcrumb, announcement, dense-overflow, evidence-mode, evidence, and footer semantics;
 - `dist/manifest.json` for file sizes and SHA-256 fingerprints;
 - `dist/licenses/` for the bundled font licences.
 
@@ -55,13 +55,13 @@ python3 scripts/build_release.py --output-dir reports/release
 git diff --check
 ```
 
-Validation checks deterministic output, immutable brand and accessibility tokens, WCAG AA contrast for readable faint text on every Atlas surface, all approved component roles, measured semantic extensions, the footer slot and variant contract, licensed repository-local font faces, distributed file fingerprints, repository-local runtime behaviour, and generated-file cleanliness.
+Validation checks deterministic output, immutable accessibility tokens, WCAG AA text contrast, all approved component roles, the evidence-mode authority, footer contracts, repository-local font faces, distributed file fingerprints, repository-local runtime behaviour, and generated-file cleanliness.
 
 ## Release process
 
-A release updates the source contracts, generated bundle, and `VERSION` in the same pull request. The deterministic GitHub Release artifact contains the `dist/` bundle, the Brand Reference, the Consumer Contract, the measured foundation extension, the footer extension, the licence, and a release manifest with SHA-256 fingerprints. See `docs/RELEASE.md`.
+A release updates the source contracts, generated bundle, and `VERSION` in the same pull request. The deterministic GitHub Release artifact contains the `dist/` bundle, maintained guidance, consumer contract, authority extension documents, licence, and a release manifest with SHA-256 fingerprints. See `docs/RELEASE.md`.
 
-Merging this repository does not deploy a public interface. Tagging and publishing a release require a separate approval. Production rollout remains owned by each consuming repository.
+Merging this repository does not deploy a public interface. Tagging and publishing a release require separate approval. Production rollout remains owned by each consuming repository.
 
 ## Licence
 
@@ -69,7 +69,7 @@ The interface-kit source is released under the MIT License. See `LICENSE`. Bundl
 
 ## How it fits into Atlas Systems
 
-`atlas-interface-kit` implements the Public Interface System v2 authority and its measured Phase 4 and Phase 6 extensions, all owned by `AtlasReaper311/atlas-infra`. It supplies versioned presentation foundations to `atlas-systems`, `status`, `ramone-edge`, `atlas-api-public`, and `atlas-doc-viewer` while leaving deployment, content, interaction triggers, footer destinations, publication sequencing, and product behaviour with each repository.
+`atlas-interface-kit` implements Public Interface System v2 authority owned by `AtlasReaper311/atlas-infra`. It supplies versioned presentation foundations to `atlas-systems`, `status`, `ramone-edge`, `atlas-api-public`, and `atlas-doc-viewer` while leaving deployment, content, evidence selection, runtime-state calculation, interaction triggers, footer destinations, publication sequencing, and product behaviour with each repository.
 
 A shared interface contract is safest when distribution is automated but runtime assets remain local, pinned, independently testable, and independently reversible.
 
