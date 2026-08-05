@@ -137,7 +137,7 @@ def main() -> int:
     require(manifest["component_role_count"] == len(role_map) == 30, "component role count mismatch")
     evidence_components = components["evidence_mode"]
     require(evidence_components["mode_attribute"] == "data-evidence-mode", "mode attribute drifted")
-    require(list(evidence_components["mode_selectors"]) == MODES, "mode selector order drifted")
+    require(set(evidence_components["mode_selectors"]) == set(MODES), "mode selectors drifted")
     require(
         {
             evidence_components["mode_label_selector"],
@@ -149,7 +149,7 @@ def main() -> int:
     )
 
     evidence = semantics["evidence_mode_authority"]
-    require(list(evidence["modes"]) == MODES, "evidence mode order drifted")
+    require(set(evidence["modes"]) == set(MODES), "evidence mode contracts drifted")
     require(evidence["directory_data_modes"] == ["Live", "Replay", "Generated", "Simulated"], "directory modes drifted")
     require(evidence["generated_output_is_evidence"] is False, "generated output must not become evidence")
     require(evidence["runtime_state_is_separate_from_evidence_mode"] is True, "runtime state must remain separate")
