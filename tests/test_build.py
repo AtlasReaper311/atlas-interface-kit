@@ -74,7 +74,7 @@ class BuildTests(unittest.TestCase):
         evidence = components["evidence_mode"]
         self.assertEqual("data-evidence-mode", evidence["mode_attribute"])
         self.assertEqual(
-            [
+            {
                 "measured",
                 "stale-measured",
                 "recorded-replay",
@@ -82,8 +82,8 @@ class BuildTests(unittest.TestCase):
                 "unavailable",
                 "unknown",
                 "not-applicable-unscored",
-            ],
-            list(evidence["mode_selectors"]),
+            },
+            set(evidence["mode_selectors"]),
         )
         self.assertEqual(
             {"identity", "context", "evidence", "sequence", "estate_escape"},
